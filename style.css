@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&display=swap');
+
+canvas {
+  top:0px;
+  position:absolute;
+}
+#ui {
+  top:0px;
+  position: absolute;
+  left:510px;
+}
+* {
+  font-family: 'Zen Kurenaido', sans-serif;
+}
+#outerhealth{
+  background: black;
+  width:100px;
+  height:32px;
+  margin-top:15px;
+  margin-left:50px;
+  position:absolute;
+}
+#innerhealth{
+  background: green;
+  width:80px;
+  height:16px;
+  margin-top:23px;
+  margin-left: 60px;
+  line-height:16px;
+  text-align: center;
+  position:absolute;
+  color:white;
+  transition: 100ms;
+}
+
+#coins {
+  text-align: center;
+}
+
+#outerstamina{
+  background: black;
+  width:100px;
+  height:32px;
+  margin-top:52px;
+  margin-left:50px;
+  position:absolute;
+}
+#innerstamina{
+  background: white;
+  width:80px;
+  height:16px;
+  margin-top:60px;
+  margin-left: 60px;
+  line-height:16px;
+  text-align: center;
+  position:absolute;
+  color:black;
+  transition: 100ms;
+}
+
+.item {
+  margin-left: 50px;
+  width: 100px;
+  background: white;
+  color: black;
+}
+/* wave system is after this */
+#coins {
+  height: 30px;
+  line-height: 30px;
+}
