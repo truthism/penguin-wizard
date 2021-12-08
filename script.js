@@ -538,7 +538,6 @@ function updateStamina() {
 var sword = document.getElementById("sword")
 
 function sup1() {
-  console.log('hi')
   if (coins >= price) {
     coins -= price;
     damage += 0.25;
