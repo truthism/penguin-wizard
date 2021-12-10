@@ -1,4 +1,8 @@
 var price = 6; 
+let wave = 0;
+let wavesList = [
+  [['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3]],
+  [['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3]]];
 var fbunlocked = false;
 function preload() {
   
@@ -67,7 +71,7 @@ let pos = [5 * 32, 10 * 32]
 let spawnpos = [5*32,10*32]
 let speeding = 3
 let slash = [0, 'up',-80,-80]
-let health = 5
+let health = 5;
 let xspd = 0;
 let yspd = 0;
 let stamina = 10;
@@ -77,7 +81,7 @@ window.setInterval(()=> {
   }
 },10000)
 let fireballs = [];
-mobspos=[['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3]] // what are all these variables
+mobspos=[['zombie',0,0,'zombiedown',[0,1],3]] // what are all these variables
 // name posx posy sprite vector (zombie)
 // name posx posy sprite aimingdir
 let island = "base"
@@ -377,7 +381,9 @@ function draw() {
     }
   }
   if (mobspos.length===0){
-    window.clearInterval(tier)
+    document.getElementById('wavearea').innerHTML='<button onclick="nextWave();" class="item">Next Wave</button><br><button onclick="restartWave()" class="item">Restart Wave</button>'
+  } else {
+    document.getElementById('wavearea').innerHTML=''
   }
   if (frameCount >= 10) {
   // update coins
@@ -518,4 +524,13 @@ function ufb() {
     fbunlocked=true;
     coins -= 20;
   }
+}
+
+function nextWave() {
+  wave++;
+  mobspos=wavesList[wave];
+}
+
+function restartWave() {
+  mobspos=wavesList[wave];
 }
