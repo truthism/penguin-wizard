@@ -1,4 +1,4 @@
-var price = 6;
+var price = 6; 
 var fbunlocked = false;
 function preload() {
   
@@ -125,23 +125,7 @@ function draw() {
   if (invistimer==0){
     invis=false;
   }
-  // // up - left
-  // if((keyIsDown(87) || keyIsDown(38)) && (keyIsDown(65) || keyIsDown(37))) {
-  //   facing = -45
-  // }
-  // // up - right
-  // if((keyIsDown(87) || keyIsDown(38)) && (keyIsDown(68) || keyIsDown(39))) {
-  //   facing = 45
-  // }
-  // // down - left
-  // if((keyIsDown(83) || keyIsDown(40)) && (keyIsDown(65) || keyIsDown(37))) {
-  //   facing = -135
-  // }
-  // // down - right
-  // if((keyIsDown(83) || keyIsDown(40)) && (keyIsDown(68) || keyIsDown(39))) {
-  //   facing = 135
-  // }
-  // up & down or left & right
+  
   if (((keyIsDown(87) || keyIsDown(38)) && (keyIsDown(83) || keyIsDown(40))) || ((keyIsDown(65) || keyIsDown(37)) && (keyIsDown(68) || keyIsDown(39)))) {
     facing = 0
   }  
@@ -196,23 +180,7 @@ function draw() {
   if (yspd <=-1) {
     yspd++;
   }
-  // if (keyIsDown(88)) {
-  //   if (facing == 0 && slash[0] == 0) {
-
-  //     slash = [30, 'up']
-  //   }
-  //   if (facing == 90 && slash[0] == 0) {
-
-  //     slash = [30, 'right']
-  //   }
-  //   if (facing == 180 && slash[0] == 0) {
-  //     slash = [30, 'down']
-  //   }
-  //   if (facing == -90 && slash[0] == 0) {
-  //     slash = [30, 'left']
-
-  //   }
-  // }
+  
   mobspos.forEach((i,index)=>{
     if (i[1]<=0){
       i[4]=[1,0]
