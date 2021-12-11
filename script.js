@@ -2,8 +2,14 @@ var price = 6;
 let wave = 0;
 let waveDone = false;
 let wavesList = [
-  [['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3]],
-  [['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3]]];
+  [
+    ['zombie',0,0,'zombiedown',[0,1],3],
+  ],
+  [
+    ['zombie',0,0,'zombiedown',[0,1],3],
+    ['zombie',0,0,'zombiedown',[0,1],3]
+  ]
+];
 var fbunlocked = false;
 function preload() {
   
@@ -390,6 +396,8 @@ function draw() {
     var restartWaveButton = document.createElement('button');
     restartWaveButton.setAttribute('onclick','restartWave()');
     restartWaveButton.innerText = "Restart Wave";
+    nextWaveButton.setAttribute('class','item')
+    restartWaveButton.setAttribute('class','item')
     var linebreak = document.createElement('br')
     document.getElementById('wavearea').appendChild(nextWaveButton);
     document.getElementById('wavearea').appendChild(linebreak)
