@@ -388,11 +388,7 @@ function draw() {
   // update fireballs
   var fbindex = 0
   fireballs.forEach((fb) => {
-    if (fireballs.length !== 0&&frameCount%1000==0)  {
-
     
-      console.log(fb)
-    }
     if (fb[0] == 'up') {
       image(fireballup,fb[1],fb[2])
       fb[2]-=4
