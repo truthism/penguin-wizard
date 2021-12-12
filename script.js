@@ -1,7 +1,7 @@
 var price = 6; 
 let wave = 0;
 let waveDone = false;
-let wavesList = [
+const wavesList = [
   [
     ['zombie',0,0,'zombiedown',[0,1],3],
   ],
