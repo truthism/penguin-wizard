@@ -1,7 +1,17 @@
+
 var price = 6; 
 let wave = 0;
 let waveDone = false;
-const wavesList = [
+// const wavesFn = () => {
+//   name: 'zombie',
+//   x: 0,
+//   y: 0, 
+//   sprite: 'zombiedown',
+//   vector: [0, 1],
+//   health: 3
+// };
+
+let wavesList = [
   [
     ['zombie',0,0,'zombiedown',[0,1],3],
   ],
@@ -10,6 +20,10 @@ const wavesList = [
     ['zombie',0,0,'zombiedown',[0,1],3]
   ]
 ];
+let wavesListCopy = _.cloneDeep(wavesList);
+ 
+
+
 var fbunlocked = false;
 function preload() {
   
@@ -105,7 +119,7 @@ let x = 0
 let y = 0
 let bgdata;
 function draw() {
-  
+  updateWavesList();
   background('lightblue')
   x = 0
   y=0
@@ -555,4 +569,9 @@ function nextWave() {
 
 function restartWave() {
   mobspos=wavesList[wave];
+  
+}
+
+function updateWavesList() {
+  wavesList = _.cloneDeep(wavesListCopy);
 }
