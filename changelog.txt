@@ -1,8 +1,0 @@
-oct 26 ported alderwood moving mechanics and slashing, w/ new sprites
-dec 08: 
-zombie, player, coin sprite updated etc
-slash fixed
-invincibility frames
-fireball
-slash upgrades
-TODO wave system

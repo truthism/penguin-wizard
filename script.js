@@ -17,7 +17,10 @@ let wavesList = [
   ],
   [
     ['zombie',0,0,'zombiedown',[0,1],3],
-    ['zombie',0,0,'zombiedown',[0,1],3]
+    ['zombie',50,0,'zombiedown',[0,1],3]
+  ],
+  [
+    ['skeleton',0,0,'skeletondown',[[0,1],[]],4]
   ]
 ];
 let wavesListCopy = _.cloneDeep(wavesList);
@@ -207,32 +210,33 @@ function draw() {
   }
   
   mobspos.forEach((i,index)=>{
-    if (i[1]<=0){
-      i[4]=[1,0]
-    }
-    if (i[1]>=475){
-      i[4]=[-1,0]
-    }
-    if (i[2]<=0){
-      i[4]=[0,1]
-    }
-    if (i[2]>=475){
-      i[4]=[0,-1]
-    }
-    if (i[4][0] == 0 && i[4][1]==1) {
-      
-      i[3]='zombiedown'
-    }
-    if (i[4][0] == 0 && i[4][1]==-1) {
-      i[3]='zombieup'
-    }
-    if (i[4][0] == 1 && i[4][1]==0) {
-      i[3]='zombieright'
-    }
-    if (i[4][0] == -1 && i[4][1]==0) {
-      i[3]='zombieleft'
-    }
     if (i[0]=='zombie') {
+      if (i[1]<=0){
+        i[4]=[1,0]
+      }
+      if (i[1]>=475){
+        i[4]=[-1,0]
+      }
+      if (i[2]<=0){
+        i[4]=[0,1]
+      }
+      if (i[2]>=475){
+        i[4]=[0,-1]
+      }
+      if (i[4][0] == 0 && i[4][1]==1) {
+        
+        i[3]='zombiedown'
+      }
+      if (i[4][0] == 0 && i[4][1]==-1) {
+        i[3]='zombieup'
+      }
+      if (i[4][0] == 1 && i[4][1]==0) {
+        i[3]='zombieright'
+      }
+      if (i[4][0] == -1 && i[4][1]==0) {
+        i[3]='zombieleft'
+      }
+      
       i[1]+=i[4][0]
       i[2]+=i[4][1]
 
@@ -332,27 +336,43 @@ function draw() {
         // rotate(-i[8])
         // translate(-width/2,-height/2)
       }
-      
-    }
-    else if (i[0]=='barrier') {
-      image(barrier,i[1],i[2])
-      if (coldetect(i[1],i[2],32,32,slash[2]-5,slash[3]-5,35,35) && (slash[0]!==0) && (slash[4] !== 0)) {
-        
-        
-        i[4]=1
-        if (facing==0) {
-          i[2]-=3
-          
-        } else if (facing==90) {
-          i[1]+=3
-        } else if (facing==-90) {
-          i[1]-=3
-        } else if (facing == 180) {
-          i[2]+=3
-        }
+    } else if (i[0]=="skeleton"){
+      if (i[1]<=0){
+        i[4][0]=[1,0]
       }
-      if (coldetect(i[1],i[2],25,25,pos[0],pos[1],25,25)){
+      if (i[1]>=475){
+        i[4][0]=[-1,0]
+      }
+      if (i[2]<=0){
+        i[4][0]=[0,1]
+      }
+      if (i[2]>=475){
+        i[4][0]=[0,-1]
+      }
+      
+      if (i[4][0][0] == 0 && i[4][0][1]==1) {
         
+        i[3]='skeletondown'
+      }
+      if (i[4][0][0] == 0 && i[4][0][1]==-1) {
+        i[3]='skeletonup'
+      }
+      if (i[4][0][0] == 1 && i[4][0][1]==0) {
+        i[3]='skeletonright'
+      }
+      if (i[4][0][0] == -1 && i[4][0][1]==0) {
+        i[3]='skeletonleft'
+      }
+      
+      i[1]+=i[4][0][0]
+      i[2]+=i[4][0][1]
+
+      if (coldetect(i[1],i[2],25,25,pos[0],pos[1],25,25)&&invis==false){
+        health--;
+        invis=true
+
+        invistimer=50
+        updateHealth()
         if (facing==0) {
           yspd=7
         } else if (facing==90) {
@@ -364,7 +384,88 @@ function draw() {
         }
         
       }
+      
+      if (health==0) {
+        pos[0]=spawnpos[0]
+        pos[1]=spawnpos[1]
+        health=5
+        document.getElementById('innerhealth').innerHTML=5
+        document.getElementById('innerhealth').style.width="80px"
+        document.getElementById('innerhealth').style.background="green"
+        
+      }
+      if (coldetect(i[1],i[2],25,25,slash[2]-10,slash[3]-10,45,45) && (slash[0]!==0) && (slash[4] !== 0)) {
+        if(slash[4] == enemyframes) {
+          
+          i[5]-=damage;
+          
+          if (i[5]<=0) {
+            mobspos.splice(index,1)
+            coins+=3
+          }
+          
+        }
+        
+        
+        if (facing==0) {
+          i[2]-=3
+          
+        } else if (facing==90) {
+          i[1]+=3
+        } else if (facing==-90) {
+          i[1]-=3
+        } else if (facing == 180) {
+          i[2]+=3
+        }
+      }
+      
+      if (frameCount % 60 === 0) {
+        i[4]=chance.pickone([[0,1],[0,-1],[1,0],[-1,0]])
+        
+        if (i[4][0][0] == 0 && i[4][0][1]==1) {
+          
+          i[3]='skeletondown'
+        }
+        if (i[4][0][0] == 0 && i[4][0][1]==-1) {
+          i[3]='skeletonup'
+        }
+        if (i[4][0][0] == 1 && i[4][0][1]==0) {
+          i[3]='skeletonright'
+        }
+        if (i[4][0][0] == -1 && i[4][0][1]==0) {
+          i[3]='skeletonleft'
+        }
+      }
+      if(i[3]=='skeletonup'){
+              
+        image(skeletonup,i[1],i[2])
+        
+        // translate(-i[1],-i[2])
+      }
+      else if (i[3]=='skeletonleft') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(skeletonleft,i[1],i[2])
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+      else if (i[3]=='skeletonright') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(skeletonright,i[1],i[2])
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+      else if (i[3]=='skeletondown') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(skeletondown,i[1],i[2])
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
     }
+    
+    
 
   })
   if (slash[0] >= 1) {
