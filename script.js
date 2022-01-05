@@ -1,4 +1,29 @@
+
 var price = 6; 
+let wave = 0;
+let waveDone = false;
+// const wavesFn = () => {
+//   name: 'zombie',
+//   x: 0,
+//   y: 0, 
+//   sprite: 'zombiedown',
+//   vector: [0, 1],
+//   health: 3
+// };
+
+let wavesList = [
+  [
+    ['zombie',0,0,'zombiedown',[0,1],3],
+  ],
+  [
+    ['zombie',0,0,'zombiedown',[0,1],3],
+    ['zombie',0,0,'zombiedown',[0,1],3]
+  ]
+];
+let wavesListCopy = _.cloneDeep(wavesList);
+ 
+
+
 var fbunlocked = false;
 function preload() {
   
@@ -67,7 +92,7 @@ let pos = [5 * 32, 10 * 32]
 let spawnpos = [5*32,10*32]
 let speeding = 3
 let slash = [0, 'up',-80,-80]
-let health = 5
+let health = 5;
 let xspd = 0;
 let yspd = 0;
 let stamina = 10;
@@ -77,7 +102,7 @@ window.setInterval(()=> {
   }
 },10000)
 let fireballs = [];
-mobspos=[['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3],['zombie',0,0,'zombiedown',[0,1],3]] // what are all these variables
+mobspos=[['zombie',0,0,'zombiedown',[0,1],3]] // what are all these variables
 // name posx posy sprite vector (zombie)
 // name posx posy sprite aimingdir
 let island = "base"
@@ -94,7 +119,7 @@ let x = 0
 let y = 0
 let bgdata;
 function draw() {
-  
+  updateWavesList();
   background('lightblue')
   x = 0
   y=0
@@ -377,7 +402,24 @@ function draw() {
     }
   }
   if (mobspos.length===0){
-    window.clearInterval(tier)
+    if (!waveDone) {
+    waveDone = true;
+    var nextWaveButton = document.createElement('button');
+    nextWaveButton.setAttribute('onclick','nextWave()');
+    nextWaveButton.innerText = "Next Wave";
+    var restartWaveButton = document.createElement('button');
+    restartWaveButton.setAttribute('onclick','restartWave()');
+    restartWaveButton.innerText = "Restart Wave";
+    nextWaveButton.setAttribute('class','item')
+    restartWaveButton.setAttribute('class','item')
+    var linebreak = document.createElement('br')
+    document.getElementById('wavearea').appendChild(nextWaveButton);
+    document.getElementById('wavearea').appendChild(linebreak)
+    document.getElementById('wavearea').appendChild(restartWaveButton);
+    }
+  } else {
+    waveDone = false;
+    document.getElementById('wavearea').innerHTML=''
   }
   if (frameCount >= 10) {
   // update coins
@@ -514,4 +556,18 @@ function ufb() {
     fbunlocked=true;
     coins -= 20;
   }
+}
+
+function nextWave() {
+  wave++;
+  mobspos=wavesList[wave];
+}
+
+function restartWave() {
+  mobspos=wavesList[wave];
+  
+}
+
+function updateWavesList() {
+  wavesList = _.cloneDeep(wavesListCopy);
 }
