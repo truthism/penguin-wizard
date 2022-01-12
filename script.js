@@ -20,7 +20,7 @@ let wavesList = [
     ['zombie',50,0,'zombiedown',[0,1],3]
   ],
   [
-    ['skeleton',0,0,'skeletondown',[[0,1],[]],4]
+    ['skeleton',50,50,'skeletondown',[[0,1],[]],4]
   ]
 ];
 let wavesListCopy = _.cloneDeep(wavesList);
@@ -53,6 +53,14 @@ function preload() {
   fireballleft = loadImage('assets/fireballleft.png')
   fireballright = loadImage('assets/fireballright.png')
   fireballdown = loadImage('assets/fireballdown.png')
+  skeletonup = loadImage('assets/zombieup.png')
+  skeletonright = loadImage('assets/zombieright.png')
+  skeletonleft = loadImage('assets/zombieleft.png')
+  skeletondown = loadImage('assets/zombiedown.png')
+  arrowup = loadImage('assets/arrowup.png')
+  arrowleft = loadImage('assets/arrowleft.png')
+  arrowdown = loadImage('assets/arrowdown.png')
+  arrowright = loadImage('assets/arrowright.png')
 } 
 
 var invis =false;
@@ -419,23 +427,69 @@ function draw() {
         }
       }
       
-      if (frameCount % 60 === 0) {
-        i[4]=chance.pickone([[0,1],[0,-1],[1,0],[-1,0]])
-        
-        if (i[4][0][0] == 0 && i[4][0][1]==1) {
+      if (frameCount%90===0){
+        if(i[3]==="skeletondown"||i[3]==="skeletonup"){
+          if (i[1]<=pos[0]) {
+            mobspos.push(['arrow',i[1],i[2],'arrowright',[1,0]])
+          } else {
+            mobspos.push(['arrow',i[1],i[2],'arrowleft',[-1,0]])
+          }
+          i[4][0]=chance.pickone([[1,0],[-1,0]])
+        } else {
+          if (i[2]>=pos[1]) {
+            mobspos.push(['arrow',i[1],i[2],'arrowup',[0,-1]])
+          } else {
+            mobspos.push(['arrow',i[1],i[2],'arrowdown',[0,1]])
           
-          i[3]='skeletondown'
-        }
-        if (i[4][0][0] == 0 && i[4][0][1]==-1) {
-          i[3]='skeletonup'
-        }
-        if (i[4][0][0] == 1 && i[4][0][1]==0) {
-          i[3]='skeletonright'
-        }
-        if (i[4][0][0] == -1 && i[4][0][1]==0) {
-          i[3]='skeletonleft'
+          }
+          i[4][0]=chance.pickone([[0,1],[0,-1]])
         }
       }
+      
+      
+      if (i[4][0][0] == 0 && i[4][0][1]==1) {
+        
+        i[3]='skeletondown'
+        if (i[2] > pos[1]+5) {
+          i[4][0]=[0,-1]
+        } else if (i[2] < pos[1]-5) {
+          i[4][0]=[0,1]
+        } else {
+          
+        }
+      }
+      if (i[4][0][0] == 0 && i[4][0][1]==-1) {
+        i[3]='skeletonup'
+        if (i[2] > pos[1]+5) {
+          i[4][0]=[0,-1]
+        } else if (i[2] < pos[1]-5) {
+          i[4][0]=[0,1]
+        } else {
+          
+        }
+      }
+      if (i[4][0][0] == 1 && i[4][0][1]==0) {
+        i[3]='skeletonright'
+        if (i[1] > pos[0]+5) {
+          i[4][0]=[-1,0]
+        } else if (i[1] < pos[0]-5) {
+          i[4][0]=[1,0]
+        } else {
+         
+        }
+      }
+      if (i[4][0][0] == -1 && i[4][0][1]==0) {
+        i[3]='skeletonleft'
+        
+        if (i[1] > pos[0]+5) {
+          i[4][0]=[-1,0]
+        } else if (i[1] < pos[0]-5) {
+          i[4][0]=[1,0]
+        } else {
+          
+        }
+      }
+      
       if(i[3]=='skeletonup'){
               
         image(skeletonup,i[1],i[2])
@@ -460,6 +514,68 @@ function draw() {
         // translate(width/2,height/2)
         // rotate(i[8])
         image(skeletondown,i[1],i[2])
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+    }
+    else if (i[0] == "arrow") {
+      // moving
+      // [arrows] [name, posx, posy, sprite, vector]
+      i[1] += i[4][0]
+      i[2] += i[4][1]
+      i[1] += i[4][0]
+      i[2] += i[4][1]
+      if (coldetect(i[1],i[2],25,25,pos[0],pos[1],25,25)&&invis==false){
+        health--;
+        invis=true
+
+        invistimer=50
+        updateHealth()
+        if (facing==0) {
+          yspd=7
+        } else if (facing==90) {
+          xspd=-7
+        } else if (facing==-90) {
+          xspd=7
+        } else if (facing == 180) {
+          yspd=-7
+        }
+        
+      }
+      
+      if (health==0) {
+        pos[0]=spawnpos[0]
+        pos[1]=spawnpos[1]
+        health=5
+        document.getElementById('innerhealth').innerHTML=5
+        document.getElementById('innerhealth').style.width="80px"
+        document.getElementById('innerhealth').style.background="green"
+        
+      }
+      if(i[3]=='arrowup'){
+              
+        image(arrowup,i[1],i[2])
+        
+        // translate(-i[1],-i[2])
+      }
+      else if (i[3]=='arrowleft') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(arrowleft,i[1],i[2])
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+      else if (i[3]=='arrowright') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(arrowright,i[1],i[2])
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+      else if (i[3]=='arrowdown') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(arrowdown,i[1],i[2])
         // rotate(-i[8])
         // translate(-width/2,-height/2)
       }
