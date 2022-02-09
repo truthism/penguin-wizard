@@ -6,15 +6,39 @@
     
   <title>penguin</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
-  </head>
+  </head>  
   <body>
-    <div id="ui" style="width:200px;height:100%;border:1px solid black;"><div id="outerhealth"></div>
-    <div id="innerhealth">5</div><div id="outerstamina"></div>
-    <div id="innerstamina">10</div><br><br><br><br>
+    
+    <div id="ui" style="width:200px;height:125%;border:1px solid black;">
+    
+    <!-- Health -->
+    <div id="outerhealth"></div>
+    <div id="innerhealth">5</div>
+    
+    <!-- Stamina -->
+    <div id="outerstamina"></div>
+    <div id="innerstamina">10</div>
+    <br><br><br><br>
+    <!-- Coins -->
     <p id="coins"><img src="assets/coin.png" /> 0</p>
-    <button type="button" class="item" id="sword" onclick="sup1()">Sword : +1 damage: 6 Coins</button><br><button class="item" id="fb" onclick="ufb()">Fireball Spell: 20 Coins</button>
+    
+    <!-- Sword Button -->
+    <button type="button" class="item" id="sword" onclick="sup1()"><img src="assets/sword.png" />Sword : +1 damage: 6 Coins</button><br>
+    
+    <!-- Fireball Button -->
+    <button class="item" id="fb" onclick="ufb()"><img src="assets/fireballleft.png"/>Fireball Spell: 20 Coins</button><br>
+    
+    <!-- Potion Button -->
+    <button type="button" class="item" id="potion" onclick="sup2()"><img src="assets/hpotion.png" />Potion : +1 health: 5 Coins</button>
+    
+    <!--Waves-->
     <div id="wavearea"></div>
 </div> 
+
+<!--Death window-->
+<div id="overlay"></div>
+
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>
 <script  src="https://cdnjs.cloudflare.com/ajax/libs/chance/1.1.8/chance.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
