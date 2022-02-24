@@ -1,5 +1,18 @@
 let wave = 0;
 let waveDone = false;
+let timer = 0;
+let splits = []
+let currentrun = []
+let pb = [];
+if (window.localStorage.getItem('pb') !== null) { 
+  let pb1 = window.localStorage.getItem('pb').split(',')
+  pb1.forEach((ii) => {
+    pb.push(parseInt(ii*100)/100)
+  })
+} else { 
+  pb = [100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000]
+} 
+
 // const wavesFn = () => {
 //   name: 'zombie',
 //   x: 0,
@@ -24,7 +37,8 @@ let wavesList = [
     ['zombie', 0, 0, 'zombiedown', [0, 1], 3, 0,1,25],
     ['skeleton', 50, 50, 'skeletondown', [[0, 1], []], 4, 0]
   ],
-  [['zombie', 0, 0, 'zombiedown', [0, 1], 25, 0,2,50]]
+  [['zombie', 0, 0, 'zombiedown', [0, 1], 25, 0,2,50]],
+  [['witch', 50, 50, 'witchdown', [[0, 1], []], 10, 0]]
 ];
 let wavesListCopy = _.cloneDeep(wavesList);
  
@@ -33,10 +47,10 @@ let wavesListCopy = _.cloneDeep(wavesList);
 var fbunlocked = false;
 function preload() {
 
-  playerup = loadImage("assets/playerup.png")
-  playerleft = loadImage("assets/playerleft.png")
-  playerdown = loadImage("assets/playerdown.png")
-  playerright = loadImage("assets/playerright.png")
+  blackup = loadImage("penguinskins/blackup.png")
+  blackleft = loadImage("penguinskins/blackleft.png")
+  blackdown = loadImage("penguinskins/blackdown.png")
+  blackright = loadImage("penguinskins/blackright.png")
   slashup = loadImage("assets/slashup.png")
   slashleft = loadImage("assets/slashleft.png")
   slashright = loadImage("assets/slashright.png")
@@ -68,17 +82,29 @@ function preload() {
   zombiedamleft = loadImage('assets/zombiedamageleft.png')
   zombiedamdown = loadImage('assets/zombiedamagedown.png')
   backgroundimage = loadImage('assets/background.png')
+  boss1up = loadImage('assets/bossup.png')
+  boss1down = loadImage('assets/bossdown.png')
+  boss1left = loadImage('assets/bossleft.png')
+  boss1right = loadImage('assets/bossright.png')
+  skeletondamup = loadImage('assets/skeletondamageup.png')
+  skeletondamleft = loadImage('assets/skeletondamageleft.png')
+  skeletondamdown = loadImage('assets/skeletondamagedown.png')
+  skeletondamright = loadImage('assets/skeletondamageright.png')
+  witchup = loadImage('assets/witchup.png')
+  witchleft = loadImage('assets/witchleft.png')
+  witchright = loadImage('assets/witchright.png')
+  witchdown = loadImage('assets/witchdown.png')
+  blackhole = loadImage('assets/blackhole.png')
+  blackholebr = loadImage('assets/blackholewarning.png')
 }
 
-var lives = 3;
+var lives = 5;
 var invis = false;
 var invistimer = 0;
-var timer = 0
+
 var coins = 0
 var damage = 1;
-var tier = window.setInterval(() => {
-  timer++;
-}, 1000)
+
 function rtf(file) {
   var rawFile = new XMLHttpRequest();
   rawFile.open("GET", file, false);
@@ -134,7 +160,13 @@ let x = 0
 let y = 0
 let bgdata;
 function draw() {
-  
+  if (timer === 0) {
+    let stopwatch = window.setInterval( ()=> {
+      timer+=0.01
+
+      document.getElementById('timer').innerHTML=timer.toFixed(2)
+    },10)
+  }
   updateWavesList();
   background('lightblue')
   image(backgroundimage,0,0,500,500)
@@ -148,10 +180,9 @@ function draw() {
   }
 
   function deathscreen() {
-    //document.getElementById("overlay").style.display = "block";
-    alert("you died!");
-    
-    
+    document.getElementById("overlay").style.display = "flex";
+    document.getElementById("ui").style.display="none"    
+    document.getElementById("stopwatch").style.display="none"
   }
 
   function off() {
@@ -185,18 +216,20 @@ function draw() {
   }
 
   if (invis == false || frameCount % 4 >= 1) {
-    if (facing == 0) {
-      image(playerup, pos[0], pos[1])
-    }
-    if (facing == 90) {
-      image(playerright, pos[0], pos[1])
-    }
+    if (lives !== 0) {
+      if (facing == 0) {
+        image(blackup, pos[0], pos[1])
+      }
+      if (facing == 90) {
+        image(blackright, pos[0], pos[1])
+      }
 
-    if (facing == 180) {
-      image(playerdown, pos[0], pos[1])
-    }
-    if (facing == -90) {
-      image(playerleft, pos[0], pos[1])
+      if (facing == 180) {
+        image(blackdown, pos[0], pos[1])
+      }
+      if (facing == -90) {
+        image(blackleft, pos[0], pos[1])
+      }
     }
   }
   
@@ -305,7 +338,11 @@ function draw() {
 
           if (i[5] <= 0) {
             mobspos.splice(index, 1)
-            coins += 3
+            if (i[8] == 25) {
+              coins += 3
+            } else {
+              coins += 20
+            }
           }
 
         }
@@ -344,7 +381,11 @@ function draw() {
       }
       if (i[3] == 'zombieup') {
 
-        image(zombieup, i[1], i[2],i[8],i[8])
+        if (i[8]==25) {
+          image(zombieup, i[1], i[2],i[8],i[8])
+        } else if (i[8]==50) {
+          image(boss1up,i[1],i[2],i[8],i[8])
+        }       
 
         // translate(-i[1],-i[2])
         if (i[6] > 0) {
@@ -354,7 +395,11 @@ function draw() {
       else if (i[3] == 'zombieleft') {
         // translate(width/2,height/2)
         // rotate(i[8])
-        image(zombieleft, i[1], i[2],i[8],i[8])
+        if (i[8]==25) {
+          image(zombieleft, i[1], i[2],i[8],i[8])
+        } else if (i[8]==50) {
+          image(boss1left,i[1],i[2],i[8],i[8])
+        }       
         // rotate(-i[8])
         // translate(-width/2,-height/2)
         if (i[6] > 0) {
@@ -364,7 +409,11 @@ function draw() {
       else if (i[3] == 'zombieright') {
         // translate(width/2,height/2)
         // rotate(i[8])
-        image(zombieright, i[1], i[2],i[8],i[8])
+        if (i[8]==25) {
+          image(zombieright, i[1], i[2],i[8],i[8])
+        } else if (i[8]==50) {
+          image(boss1right,i[1],i[2],i[8],i[8])
+        }       
         // rotate(-i[8])
         // translate(-width/2,-height/2)
         if (i[6] > 0) {
@@ -374,7 +423,12 @@ function draw() {
       else if (i[3] == 'zombiedown') {
         // translate(width/2,height/2)
         // rotate(i[8])
-        image(zombiedown, i[1], i[2],i[8],i[8])
+        if (i[8]==25) {
+          image(zombiedown, i[1], i[2],i[8],i[8])
+        } else if (i[8]==50) {
+          image(boss1down,i[1],i[2],i[8],i[8])
+        }
+
         // rotate(-i[8])
         // translate(-width/2,-height/2)
         if (i[6] > 0) {
@@ -440,11 +494,14 @@ function draw() {
         document.getElementById('innerhealth').style.background = "green"
 
       }
+      if (i[6] > 0) {
+        i[6]--;
+      }
       if (coldetect(i[1], i[2], 25, 25, slash[2] - 10, slash[3] - 10, 45, 45) && (slash[0] !== 0) && (slash[4] !== 0)) {
         if (slash[4] == enemyframes) {
 
           i[5] -= damage;
-          i[6] = 5
+          i[6] = 2
           if (i[5] <= 0) {
             mobspos.splice(index, 1)
             coins += 4
@@ -534,13 +591,18 @@ function draw() {
       if (i[3] == 'skeletonup') {
 
         image(skeletonup, i[1], i[2])
-
+        if (i[6]>0) {
+          image(skeletondamup,i[1],i[2])
+        }
         // translate(-i[1],-i[2])
       }
       else if (i[3] == 'skeletonleft') {
         // translate(width/2,height/2)
         // rotate(i[8])
         image(skeletonleft, i[1], i[2])
+        if (i[6]>0) {
+          image(skeletondamleft,i[1],i[2])
+        }
         // rotate(-i[8])
         // translate(-width/2,-height/2)
       }
@@ -548,6 +610,9 @@ function draw() {
         // translate(width/2,height/2)
         // rotate(i[8])
         image(skeletonright, i[1], i[2])
+        if (i[6]>0) {
+          image(skeletondamright,i[1],i[2])
+        }
         // rotate(-i[8])
         // translate(-width/2,-height/2)
       }
@@ -555,6 +620,193 @@ function draw() {
         // translate(width/2,height/2)
         // rotate(i[8])
         image(skeletondown, i[1], i[2])
+        if (i[6]>0) {
+          image(skeletondamdown,i[1],i[2])
+        }
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+    }
+    else if (i[0] == "witch") {
+      if (i[1] <= 0) {
+        i[4][0] = [1, 0]
+      }
+      if (i[1] >= 475) {
+        i[4][0] = [-1, 0]
+      }
+      if (i[2] <= 0) {
+        i[4][0] = [0, 1]
+      }
+      if (i[2] >= 475) {
+        i[4][0] = [0, -1]
+      }
+
+      if (i[4][0][0] == 0 && i[4][0][1] == 1) {
+
+        i[3] = 'witchdown'
+      }
+      if (i[4][0][0] == 0 && i[4][0][1] == -1) {
+        i[3] = 'witchup'
+      }
+      if (i[4][0][0] == 1 && i[4][0][1] == 0) {
+        i[3] = 'witchright'
+      }
+      if (i[4][0][0] == -1 && i[4][0][1] == 0) {
+        i[3] = 'witchleft'
+      }
+
+      i[1] += i[4][0][0]
+      i[2] += i[4][0][1]
+
+      if (coldetect(i[1], i[2], 25, 25, pos[0], pos[1], 25, 25) && invis == false) {
+        health--;
+        invis = true
+
+        invistimer = 50
+        updateHealth()
+        if (facing == 0) {
+          yspd = 7
+        } else if (facing == 90) {
+          xspd = -7
+        } else if (facing == -90) {
+          xspd = 7
+        } else if (facing == 180) {
+          yspd = -7
+        }
+
+      }
+
+      if (health == 0) {
+        pos[0] = spawnpos[0]
+        pos[1] = spawnpos[1]
+        health = 5
+        document.getElementById('innerhealth').innerHTML = 5
+        document.getElementById('innerhealth').style.width = "80px"
+        document.getElementById('innerhealth').style.background = "green"
+
+      }
+      if (i[6] > 0) {
+        i[6]--;
+      }
+      if (coldetect(i[1], i[2], 25, 25, slash[2] - 10, slash[3] - 10, 45, 45) && (slash[0] !== 0) && (slash[4] !== 0)) {
+        if (slash[4] == enemyframes) {
+
+          i[5] -= damage;
+          i[6] = 2
+          if (i[5] <= 0) {
+            mobspos.splice(index, 1)
+            coins += 4
+          }
+
+        }
+
+
+        if (facing == 0) {
+          i[2] -= 3
+
+        } else if (facing == 90) {
+          i[1] += 3
+        } else if (facing == -90) {
+          i[1] -= 3
+        } else if (facing == 180) {
+          i[2] += 3
+        }
+      }
+
+      //Arrows
+
+      if (frameCount % 90 === 0) {
+        
+        var bhs1 = [["blackhole",i[1]+25,i[2],120],["blackhole",i[1]-25,i[2],120],["blackhole",i[1],i[2]+25,120],["blackhole",i[1],i[2]-25,120]]
+        var bhs2;
+        if (i[3] === 'witchup') {
+          bhs2 = [["blackhole",i[1],i[2]-30,120],["blackhole",i[1],i[2]-60,120],["blackhole",i[1],i[2]-90,120],["blackhole",i[1],i[2]-120,120]]
+        } else if (i[3] === "witchdown") {
+          bhs2 = [["blackhole",i[1],i[2]+30,120],["blackhole",i[1],i[2]+60,120],["blackhole",i[1],i[2]+90,120],["blackhole",i[1],i[2]+120,120]]
+        } else if (i[3] === "witchleft") {
+          bhs2 = [["blackhole",i[1]-30,i[2],120],["blackhole",i[1]-60,i[2],120],["blackhole",i[1]-90,i[2],120],["blackhole",i[1]-120,i[2],120]]
+        } else if (i[3] === "witchright") {
+          bhs2 = [["blackhole",i[1]+30,i[2],120],["blackhole",i[1]+60,i[2],120],["blackhole",i[1]+90,i[2],120],["blackhole",i[1]+120,i[2],120]]
+        }
+        bhadd = chance.pickone([bhs1,bhs2])
+        bhadd.forEach((bhadde) => {
+          mobspos.push(bhadde)
+        })
+        i[4][0] = chance.pickone([[0,1],[0,-1],[1,0],[-1,0]])
+      }
+      
+      //Skeleton
+
+      if (i[4][0][0] == 0 && i[4][0][1] == 1) {
+
+        i[3] = 'witchdown'
+        if (i[2] > pos[1] + 5) {
+          i[4][0] = [0, -1]
+        } else if (i[2] < pos[1] - 5) {
+          i[4][0] = [0, 1]
+        } else {
+
+        }
+      }
+      if (i[4][0][0] == 0 && i[4][0][1] == -1) {
+        i[3] = 'witchup'
+        if (i[2] > pos[1] + 5) {
+          i[4][0] = [0, -1]
+        } else if (i[2] < pos[1] - 5) {
+          i[4][0] = [0, 1]
+        } else {
+
+        }
+      }
+      if (i[4][0][0] == 1 && i[4][0][1] == 0) {
+        i[3] = 'witchright'
+        if (i[1] > pos[0] + 5) {
+          i[4][0] = [-1, 0]
+        } else if (i[1] < pos[0] - 5) {
+          i[4][0] = [1, 0]
+        } else {
+
+        }
+      }
+      if (i[4][0][0] == -1 && i[4][0][1] == 0) {
+        i[3] = 'witchleft'
+
+        if (i[1] > pos[0] + 5) {
+          i[4][0] = [-1, 0]
+        } else if (i[1] < pos[0] - 5) {
+          i[4][0] = [1, 0]
+        } else {
+
+        }
+      }
+
+      if (i[3] == 'witchup') {
+
+        image(witchup, i[1], i[2])
+        
+        // translate(-i[1],-i[2])
+      }
+      else if (i[3] == 'witchleft') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(witchleft, i[1], i[2])
+        
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+      else if (i[3] == 'witchright') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(witchright, i[1], i[2])
+        
+        // rotate(-i[8])
+        // translate(-width/2,-height/2)
+      }
+      else if (i[3] == 'witchdown') {
+        // translate(width/2,height/2)
+        // rotate(i[8])
+        image(witchdown, i[1], i[2])
+        
         // rotate(-i[8])
         // translate(-width/2,-height/2)
       }
@@ -633,6 +885,59 @@ function draw() {
         // translate(-width/2,-height/2)
       }
     }
+    else if (i[0] == "blackhole") {
+      // moving
+      // [arrows] [name, posx, posy, timer]
+      if (i[1] <= 0) {
+        mobspos.splice(index, 1)
+      }
+      if (i[1] >= 475) {
+        mobspos.splice(index, 1)
+      }
+      if (i[2] <= 0) {
+        mobspos.splice(index, 1)
+      }
+      if (i[2] >= 475) {
+        mobspos.splice(index, 1)
+      }
+      if (i[3] > 0) {
+        i[3]--
+      } else {
+        mobspos.splice(index,1)
+      }
+      if (coldetect(i[1], i[2], 25, 25, pos[0], pos[1], 25, 25) && invis == false && i[3] < 60) {
+        health--;
+        invis = true
+
+        invistimer = 50
+        updateHealth()
+        if (facing == 0) {
+          yspd = 7
+        } else if (facing == 90) {
+          xspd = -7
+        } else if (facing == -90) {
+          xspd = 7
+        } else if (facing == 180) {
+          yspd = -7
+        }
+
+      }
+
+      if (health == 0) {
+        pos[0] = spawnpos[0]
+        pos[1] = spawnpos[1]
+        health = 5
+        document.getElementById('innerhealth').innerHTML = 5
+        document.getElementById('innerhealth').style.width = "80px"
+        document.getElementById('innerhealth').style.background = "green"
+
+      }
+      if (i[3] > 60) {
+        image(blackholebr,i[1],i[2])
+      } else {
+        image(blackhole,i[1],i[2])
+      }
+    }
 
 
     //Attacking
@@ -676,6 +981,7 @@ function draw() {
   if (mobspos.length === 0) {
     if (!waveDone) {
       waveDone = true;
+      
       var nextWaveButton = document.createElement('button');
       nextWaveButton.setAttribute('onclick', 'nextWave()');
       nextWaveButton.innerText = "Next Wave";
@@ -823,6 +1129,7 @@ function updateHealth() {
   if (health == 0) {
     document.getElementById('innerhealth').style.background = 'green'
     lives--;
+    document.getElementById('lives').innerHTML = "Lives: "+lives
   }
 }
 
@@ -852,7 +1159,8 @@ function sup1() {
 function sup2() {
   if (coins >= potionprice && health < 5) {
     coins -= potionprice;
-    health += 1;
+    health += 3;
+    if (health > 5) { health = 5 }
     updateHealth()
     document.getElementById('potion').innerHTML = "<img src='assets/hpotion.png' />Potion : +1 health:" + potionprice + " coins"
   }
@@ -865,6 +1173,22 @@ function ufb() {
 }
 
 function nextWave() {
+  var split = document.createElement('p')
+  var plusminus = "";
+  if (pb[wave] < parseInt(timer.toFixed(2))) {
+    plusminus = "+" + (0 - (pb[wave] - parseInt(timer.toFixed(2)))).toFixed(2)
+  } else {
+    plusminus = (0 - (pb[wave] - parseInt(timer.toFixed(2)))).toFixed(2)
+  }
+  
+  
+  split.innerHTML = "Wave "+(wave+1)+": "+timer.toFixed(2) + " " + plusminus;
+  currentrun.push(parseInt(timer.toFixed(2)*100)/100)
+  if (wave == wavesList.length-1 && parseInt(timer.toFixed(2)) < pb[wavesList.length-1]) {
+    pb = currentrun;
+    window.localStorage.setItem('pb',pb)
+  }
+  document.getElementById('stopwatch').appendChild(split);
   wave++;
   mobspos = wavesList[wave];
 }

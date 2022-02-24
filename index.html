@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width">
+    <link rel="icon" type="image/x-icon" href="assets/penguindown.png">
     
   <title>penguin</title>
     <link href="style.css" rel="stylesheet" type="text/css" />
@@ -18,6 +19,10 @@
     <!-- Stamina -->
     <div id="outerstamina"></div>
     <div id="innerstamina">10</div>
+
+    <div id="lives">Lives: 5</div>
+    <br><br>
+    
     <br><br><br><br>
     <!-- Coins -->
     <p id="coins"><img src="assets/coin.png" /> 0</p>
@@ -34,9 +39,11 @@
     <!--Waves-->
     <div id="wavearea"></div>
 </div> 
+<div id="stopwatch" style="width:200px;height:125%;border:1px solid black;"> <h1 id="timer">0.00</h1></div>
 
 <!--Death window-->
-<div id="overlay"></div>
+<div id="overlay"><img id="gameover" src="assets/gameover.png" onclick="window.location.reload();
+"/></div>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.21/lodash.min.js"></script>

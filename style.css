@@ -10,8 +10,21 @@ canvas {
   left:510px;
   max-height: 500px;
 }
+
+#stopwatch {
+  top:0px;
+  position: absolute;
+  left:720px;
+  max-height: 500px;
+  text-align: center;
+}
 * {
   font-family: 'Zen Kurenaido', sans-serif;
+}
+#lives {
+  margin-top:89px;
+  margin-left:50px;
+  position:absolute;
 }
 #outerhealth{
   background: black;
@@ -74,15 +87,15 @@ canvas {
 #overlay {
   position: fixed; /* Sit on top of the page content */
   display: none; /* Hidden by default */
-  width: 100%; /* Full width (cover the whole page) */
-  height: 100%; /* Full height (cover the whole page) */
+  width: 500px; /* Full width (cover the whole page) */
+  height: 510px; /* Full height (cover the whole page) */
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.5); /* Black background with opacity */
+  /*background-color: rgba(0,0,0,0.5); /* Black background with opacity */
   z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
   cursor: pointer; /* Add a pointer on hover */
-  background-image: url("assets/gameover.png")
-  background-image-width: 100%  
+  
+  line-height: 75%;
 }
