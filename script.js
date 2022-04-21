@@ -4,14 +4,10 @@ let timer = 0;
 let splits = []
 let currentrun = []
 let pb = [];
-if (window.localStorage.getItem('pb') !== null) { 
-  let pb1 = window.localStorage.getItem('pb').split(',')
-  pb1.forEach((ii) => {
-    pb.push(parseInt(ii*100)/100)
-  })
-} else { 
-  pb = [100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000,100000000]
-} 
+let fbtier = 1; 
+let cooldown = 0;
+
+
 
 // const wavesFn = () => {
 //   name: 'zombie',
@@ -66,7 +62,7 @@ let wavesList = [
     ['zombie', 50, 50, 'zombiedown', [0, 1], 3, 0,2,25]
   ], [
     
-      ['skeleton', 50, 50, 'skeletondown', [[0, 1], []], 45, 0, 45,50]
+      ['skeleton', 50, 50, 'skeletondown', [[0, 1], []], 45, 0, 60,50]
     
   ], [
      ['witch', 50, 50, 'witchdown', [[0, 1], []], 7, 0,25,0],
@@ -123,7 +119,6 @@ var skinleft;
 var skinright;
 var skindown;
 function preload() {
-
   blackup = loadImage("penguinskins/blackup.png")
   blackleft = loadImage("penguinskins/blackleft.png")
   blackdown = loadImage("penguinskins/blackdown.png")
@@ -237,7 +232,14 @@ function preload() {
   transleft = loadImage('penguinskins/transleft.png')
   transright = loadImage('penguinskins/transright.png')
   transdown = loadImage('penguinskins/transdown.png')
-  
+  sbossdown = loadImage('assets/sbossdown.png')
+  sbossright = loadImage('assets/sbossright.png')
+  sbossup = loadImage('assets/sbossup.png')
+  sbossleft = loadImage('assets/sbossleft.png')
+  wbossdown = loadImage('assets/wbossdown.png')
+  wbossright = loadImage('assets/wbossright.png')
+  wbossup = loadImage('assets/wbossup.png')
+  wbossleft = loadImage('assets/wbossleft.png')
   skinup = blackup;
   skinleft = blackleft;
   skinright = blackright;
@@ -309,7 +311,7 @@ let bgdata;
 let stopwatch;
 function draw() {
   if (!timerStarted) {
-    console.log('timer started! ' + timerStarted)
+    
     timerStarted = true;
     
     stopwatch = window.setInterval( ()=> {
@@ -385,7 +387,10 @@ function draw() {
     }
   }
   
-
+  if (pos[1] < 0) { pos[1] = 0 }
+  if (pos[1] > 475) { pos[1] = 475 }
+  if (pos[0] < 0) { pos[0] = 0 }
+  if (pos[0] > 475) { pos[0] = 475 }
 
   // up
   if ((keyIsDown(87) || keyIsDown(38)) && pos[1] > 0) {
@@ -484,7 +489,6 @@ function draw() {
 
       if (coldetect(i[1], i[2], i[8], i[8], slash[2] - 10, slash[3] - 10, 45, 45) && (slash[0] !== 0) && (slash[4] !== 0)) {
         if (slash[4] == enemyframes) {
-
           i[5] -= damage;
           i[6] = 2
 
@@ -589,8 +593,7 @@ function draw() {
       }
 
     } else if (i[0] == "skeleton") {
-      console.log(i[8])
-      console.log(i)
+      
       if (i[1] <= 0) {
         i[4][0] = [1, 0]
       }
@@ -653,7 +656,6 @@ function draw() {
       }
       if (coldetect(i[1], i[2], i[8], i[8], slash[2] - 10, slash[3] - 10, 45, 45) && (slash[0] !== 0) && (slash[4] !== 0)) {
         if (slash[4] == enemyframes) {
-
           i[5] -= damage;
           i[6] = 2
           if (i[5] <= 0) {
@@ -759,9 +761,13 @@ function draw() {
       }
 
       if (i[3] == 'skeletonup') {
+        if (i[8] == 25) {
+          image(skeletonup, i[1], i[2],i[8],i[8])
+        } else {
+          image(sbossup, i[1], i[2],i[8],i[8])
 
-        image(skeletonup, i[1], i[2],i[8],i[8])
-        console.log(i[8])
+        }
+        
         if (i[6]>0) {
           image(skeletondamup,i[1],i[2],i[8],i[8])
         }
@@ -770,8 +776,12 @@ function draw() {
       else if (i[3] == 'skeletonleft') {
         // translate(width/2,height/2)
         // rotate(i[8])
-        image(skeletonleft, i[1], i[2],i[8],i[8])
-        console.log(i[8])
+        if (i[8] == 25) {        
+          image(skeletonleft, i[1], i[2],i[8],i[8])
+        } else {
+          image(sbossleft, i[1], i[2],i[8],i[8])          
+        }
+        
         if (i[6]>0) {
           image(skeletondamleft,i[1],i[2],i[8],i[8])
         }
@@ -781,8 +791,12 @@ function draw() {
       else if (i[3] == 'skeletonright') {
         // translate(width/2,height/2)
         // rotate(i[8])
-        image(skeletonright, i[1], i[2],i[8],i[8])
-        console.log(i[8])
+        if (i[8] == 25) {                
+          image(skeletonright, i[1], i[2],i[8],i[8])
+        } else {
+          image(sbossright, i[1], i[2],i[8],i[8])
+        }
+        
         if (i[6]>0) {
           image(skeletondamright,i[1],i[2],i[8],i[8])
         }
@@ -792,8 +806,13 @@ function draw() {
       else if (i[3] == 'skeletondown') {
         // translate(width/2,height/2)
         // rotate(i[8])
-        image(skeletondown, i[1], i[2],i[8],i[8])
-        console.log(i[8])
+        if (i[8] == 25) { 
+          image(skeletondown, i[1], i[2],i[8],i[8])
+        } else {
+          image(sbossdown, i[1], i[2],i[8],i[8])
+
+        }
+        
         if (i[6]>0) {
           image(skeletondamdown,i[1],i[2],i[8],i[8])
         }
@@ -864,7 +883,6 @@ function draw() {
       }
       if (coldetect(i[1], i[2], i[7],i[7], slash[2] - 10, slash[3] - 10, 45, 45) && (slash[0] !== 0) && (slash[4] !== 0)) {
         if (slash[4] == enemyframes) {
-
           i[5] -= damage;
           i[6] = 2
           if (i[5] <= 0) {
@@ -1199,15 +1217,13 @@ function draw() {
       var nextWaveButton = document.createElement('button');
       nextWaveButton.setAttribute('onclick', 'nextWave()');
       nextWaveButton.innerText = "Next Wave";
-      var restartWaveButton = document.createElement('button');
-      restartWaveButton.setAttribute('onclick', 'restartWave()');
-      restartWaveButton.innerText = "Restart Wave";
+      
       nextWaveButton.setAttribute('class', 'item')
-      restartWaveButton.setAttribute('class', 'item')
+      
       var linebreak = document.createElement('br')
       document.getElementById('wavearea').appendChild(nextWaveButton);
       document.getElementById('wavearea').appendChild(linebreak)
-      document.getElementById('wavearea').appendChild(restartWaveButton);
+      
     }
   } else {
     waveDone = false;
@@ -1224,8 +1240,12 @@ function draw() {
     updateStamina()
     // update fireballs
     var fbindex = 0
+    if (cooldown > 0) {
+      cooldown-=1;
+      console.log("cooldown:"+cooldown)
+    }
     fireballs.forEach((fb) => {
-      var cooldown = 0
+      
 
       if (fb[0] == 'up') {
         image(fireballup, fb[1], fb[2])
@@ -1255,9 +1275,7 @@ function draw() {
       if (fb[2] >= 500) {
         fireballs.splice(fbindex, 1)
       }
-      if (cooldown > 0) {
-        cooldown--;
-      }
+      
       var sus = 0;
       mobspos.forEach((t) => {
         var size;
@@ -1268,8 +1286,14 @@ function draw() {
         }
         if ((coldetect(t[1], t[2], size, size, fb[1], fb[2], 25, 25)) && cooldown === 0) {
           t[5] -= 3
-          cooldown = 30
-          fireballs.splice(fbindex, 1)
+          
+          if (t[0] !== "arrow") {
+            cooldown=40
+            fb[3]--;
+            if (fb[3] === -1) {
+              fireballs.splice(fbindex, 1)
+            }
+          }
           if (t[5] <= 0) {
             mobspos.splice(sus, 1)
             if (t[0] === "zombie") {
@@ -1334,13 +1358,13 @@ function fireball() {
   stamina -= 4
   updateStamina();
   if (facing == 0) {
-    fireballs.push(['up', pos[0], pos[1]])
+    fireballs.push(['up', pos[0], pos[1], fbtier-1])
   } else if (facing == 90) {
-    fireballs.push(['right', pos[0], pos[1]])
+    fireballs.push(['right', pos[0], pos[1],fbtier-1])
   } else if (facing == -90) {
-    fireballs.push(['left', pos[0], pos[1]])
+    fireballs.push(['left', pos[0], pos[1],fbtier-1])
   } else if (facing == 180) {
-    fireballs.push(['down', pos[0], pos[1]])
+    fireballs.push(['down', pos[0], pos[1], fbtier-1])
   }
 }
 
@@ -1411,32 +1435,21 @@ function ufb() {
 }
 
 function nextWave() {
-  if (wave <= 16) {
+  if (wave <= 15) {
     var split = document.createElement('p')
-    var plusminus = "";
-    if (pb[wave] < parseInt(timer.toFixed(2))) {
-      plusminus = "+" + (0 - (pb[wave] - parseInt(timer.toFixed(2)))).toFixed(2)
-    } else {
-      plusminus = (0 - (pb[wave] - parseInt(timer.toFixed(2)))).toFixed(2)
-    }
+    
     
     
     split.innerHTML = "Wave "+(wave+1)+": "+timer.toFixed(2) + " ";
     currentrun.push(parseInt(timer.toFixed(2)*100)/100)
-    if (wave == wavesList.length-1 && parseInt(timer.toFixed(2)) < pb[wavesList.length-1]) {
-      pb = currentrun;
-      window.localStorage.setItem('pb',pb)
-    }
+    
     document.getElementById('stopwatch').appendChild(split);
     wave++;
     mobspos = wavesList[wave];
   }
 }
 
-function restartWave() {
-  mobspos = wavesList[wave];
 
-}
 
 function updateWavesList() {
   wavesList = _.cloneDeep(wavesListCopy);
@@ -1540,3 +1553,10 @@ function trans() {
   skinright = transright
   skindown = transdown    
 }
+
+// function changeskin(up,left,right,down) {
+//   skinup = up
+//   skinleft = left
+//   skinright = right
+//   skindown = down
+// }
