@@ -28,6 +28,16 @@ canvas {
   
   
 }
+#cosmetics {
+  top:0px;
+  position: absolute;
+  left:1140px;
+  max-height: 500px;
+  text-align: center;
+  
+  
+}
+
 #grid {
   
 }
