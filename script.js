@@ -245,66 +245,6 @@ function preload() {
   wbossright = loadImage('assets/wbossright.png')
   wbossup = loadImage('assets/wbossup.png')
   wbossleft = loadImage('assets/wbossleft.png')
-  haloup = loadImage('penguincosmetics/50haloup.png')
-  halodown = loadImage('penguincosmetics/50halodown.png')
-  haloleft = loadImage('penguincosmetics/50haloleft.png')
-  haloright = loadImage('penguincosmetics/50haloright.png')
-  hornsup = loadImage('penguincosmetics/50hornsup.png')
-  hornsdown = loadImage('penguincosmetics/50hornsdown.png')
-  hornsleft = loadImage('penguincosmetics/50hornsleft.png')
-  hornsright = loadImage('penguincosmetics/50hornsright.png')
-  partyup = loadImage('penguincosmetics/50partyup.png')
-  partydown = loadImage('penguincosmetics/50partydown.png')
-  partyleft = loadImage('penguincosmetics/50partyleft.png')
-  partyright = loadImage('penguincosmetics/50partyright.png')
-  sproutup = loadImage('penguincosmetics/50sproutup.png')
-  sproutdown = loadImage('penguincosmetics/50sproutdown.png')
-  sproutleft = loadImage('penguincosmetics/50sproutleft.png')
-  sproutright = loadImage('penguincosmetics/50sproutright.png')
-  whatup = loadImage('penguincosmetics/50whatup.png')
-  whatdown = loadImage('penguincosmetics/50whatdown.png')
-  whatleft = loadImage('penguincosmetics/50whatleft.png')
-  whatright = loadImage('penguincosmetics/50whatright.png')
-  dmaskup = loadImage('penguincosmetics/dmaskup.png')
-  dmaskdown = loadImage('penguincosmetics/dmaskdown.png')
-  dmaskleft = loadImage('penguincosmetics/dmaskleft.png')
-  dmaskright = loadImage('penguincosmetics/dmaskright.png')
-  eyepatchup = loadImage('penguincosmetics/eyepatchup.png')
-  eyepatchdown = loadImage('penguincosmetics/eyepatchdown.png')
-  eyepatchleft = loadImage('penguincosmetics/eyepatchleft.png')
-  eyepatchright = loadImage('penguincosmetics/eyepatchright.png')
-  fmaskup = loadImage('penguincosmetics/fmaskup.png')
-  fmaskleft = loadImage('penguincosmetics/fmaskleft.png')
-  fmaskright = loadImage('penguincosmetics/fmaskright.png')
-  fmaskdown = loadImage('penguincosmetics/fmaskdown.png')
-  glassesup = loadImage('penguincosmetics/glassesup.png')
-  glassesleft = loadImage('penguincosmetics/glassesleft.png')
-  glassesright = loadImage('penguincosmetics/glassesright.png')
-  glassesdown = loadImage('penguincosmetics/glassesdown.png')
-  monocleup = loadImage('penguincosmetics/monocleup.png')
-  monocleleft = loadImage('penguincosmetics/monocleleft.png')
-  monocleright = loadImage('penguincosmetics/monocleright.png')
-  monocledown = loadImage('penguincosmetics/monocledown.png')
-  ogpenguinup = loadImage('penguincosmetics/ogpenguinup.png')
-  ogpenguinleft = loadImage('penguincosmetics/ogpenguinleft.png')
-  ogpenguinright = loadImage('penguincosmetics/ogpenguinright.png')
-  ogpenguindown = loadImage('penguincosmetics/ogpenguindown.png')
-  pmaskup = loadImage('penguincosmetics/pmaskup.png')
-  pmaskleft = loadImage('penguincosmetics/pmaskleft.png')
-  pmaskright = loadImage('penguincosmetics/pmaskright.png')
-  pmaskdown = loadImage('penguincosmetics/pmaskdown.png')
-  smaskup = loadImage('penguincosmetics/smaskup.png')
-  smaskleft = loadImage('penguincosmetics/smaskleft.png')
-  smaskright = loadImage('penguincosmetics/smaskright.png')
-  smaskdown = loadImage('penguincosmetics/smaskdown.png')
-  wmaskup = loadImage('penguincosmetics/wmaskup.png')
-  wmaskleft = loadImage('penguincosmetics/wmaskleft.png')
-  wmaskright = loadImage('penguincosmetics/wmaskright.png')
-  wmaskdown = loadImage('penguincosmetics/wmaskdown.png')
-  zmaskup = loadImage('penguincosmetics/zmaskup.png')
-  zmaskleft = loadImage('penguincosmetics/zmaskleft.png')
-  zmaskright = loadImage('penguincosmetics/zmaskright.png')
-  zmaskdown = loadImage('penguincosmetics/zmaskdown.png')
   skinup = blackup;
   skinleft = blackleft;
   skinright = blackright;
@@ -443,20 +383,16 @@ function draw() {
     if (lives >= 0) {
       if (facing == 0) {
         image(skinup, pos[0], pos[1])
-        image(hatup, pos[0]-((hatSize-25)/2),pos[1])
       }
       if (facing == 90) {
         image(skinright, pos[0], pos[1])
-        image(hatright, pos[0]-((hatSize-25)/2),pos[1])
       }
 
       if (facing == 180) {
         image(skindown, pos[0], pos[1])
-        image(hatdown, pos[0]-((hatSize-25)/2),pos[1])
       }
       if (facing == -90) {
         image(skinleft, pos[0], pos[1])
-        image(hatleft, pos[0]-((hatSize-25)/2),pos[1])
       }
     }
   }
